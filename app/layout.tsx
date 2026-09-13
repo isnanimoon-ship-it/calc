@@ -42,7 +42,9 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
   },
   twitter: {
-    card: "summary",
+    // app/twitter-image.tsx(1200x630)가 있어 큰 이미지 카드 타입을 쓴다 — Next.js가
+    // 해당 파일에서 이미지 메타 태그를 자동으로 채운다(여기서 images를 따로 지정하지 않음).
+    card: "summary_large_image",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
   },
