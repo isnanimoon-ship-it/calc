@@ -15,6 +15,7 @@
  * "FAQ 콘텐츠" 절(seo-content.ts에 SSOT로 옮김)을 그대로 사용한다 — 새로 지어내지 않았다.
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { APPLICABLE_RATE_YEAR, calculateWeeklyHolidayAllowance } from "./logic";
 import {
@@ -49,6 +50,7 @@ import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { ShareActions } from "@/components/calculator/ShareActions";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 
 const EMPTY_FORM: RawWeeklyHolidayAllowanceFormInput = {
   hourlyWage: "",
@@ -326,7 +328,7 @@ export default function WeeklyHolidayAllowanceCalculatorUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">노동/근로</p>
+        <Link href="/categories/labor" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">노동/근로</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">
           주휴수당 계산기
         </h1>
@@ -380,7 +382,7 @@ export default function WeeklyHolidayAllowanceCalculatorUi() {
         </div>
       </form>
 
-      <ShareActions className="mt-5" title="주휴수당 계산기" text={result ? `예상 1주 주휴수당은 ${formatWon(result.weeklyHolidayPay)}입니다.` : "시급과 주 근무시간으로 예상 주휴수당을 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} />
+      <ShareActions className="mt-5" title="주휴수당 계산기" text={result ? `예상 1주 주휴수당은 ${formatWon(result.weeklyHolidayPay)}입니다.` : "시급과 주 근무시간으로 예상 주휴수당을 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} onKakaoShare={kakaoShareAdapter} />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}
       <div aria-live="polite" className="mt-8 space-y-5">

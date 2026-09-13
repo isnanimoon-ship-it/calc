@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { SectionCard } from "@/components/calculator/SectionCard";
 import { ShareActions } from "@/components/calculator/ShareActions";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import { parentalLeaveBenefitFaqItems } from "./content";
 import { formatKoreanDate, formatShortDate, formatWon } from "./formatting";
 import { calculateParentalLeaveBenefit } from "./logic";
@@ -50,7 +52,7 @@ export default function ParentalLeaveBenefitUi() {
   function sample() { setForm({ ...initial, startDate: "2026-09-04", leaveMonths: "12", ordinaryWageWon: "3,000,000" }); setErrors({}); setResult(null); setApplied(null); }
 
   return <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
-    <header className="max-w-3xl"><p className="mb-3 text-sm font-semibold text-primary">노동/근로</p><h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">육아휴직급여 계산기</h1><p className="mt-3 text-base leading-7 text-muted">통상임금과 육아휴직 기간으로 일반·부모 함께·한부모 특례의 월별 예상 급여를 계산합니다.</p></header>
+    <header className="max-w-3xl"><Link href="/categories/labor" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">노동/근로</Link><h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">육아휴직급여 계산기</h1><p className="mt-3 text-base leading-7 text-muted">통상임금과 육아휴직 기간으로 일반·부모 함께·한부모 특례의 월별 예상 급여를 계산합니다.</p></header>
 
     <form onSubmit={submit} className="mt-10 space-y-7 rounded-2xl border border-border bg-surface p-5 sm:p-8" noValidate>
       <fieldset><legend className="text-sm font-semibold">적용 유형</legend><div className="mt-3 grid gap-2 sm:grid-cols-3">{(Object.entries(schemeLabels) as [BenefitScheme,string][]).map(([key,label]) => <label key={key} className={`cursor-pointer rounded-xl border px-4 py-3 text-center text-sm font-semibold focus-within:ring-2 focus-within:ring-primary ${form.scheme === key ? "border-primary bg-primary-soft text-primary" : "border-border bg-background text-muted"}`}><input type="radio" name="scheme" value={key} className="sr-only" checked={form.scheme === key} onChange={() => update("scheme",key)} />{label}</label>)}</div><p className="mt-2 text-xs leading-5 text-muted">부모 함께 제도와 한부모 특례는 사용자가 해당 요건을 충족한다고 입력한 경우의 예상액입니다.</p></fieldset>
@@ -68,7 +70,7 @@ export default function ParentalLeaveBenefitUi() {
       <div className="flex flex-wrap gap-3"><button className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground">예상 급여 계산하기</button><button type="button" onClick={sample} className="rounded-xl border border-border px-4 py-3 text-sm font-semibold">예시 입력</button><button type="button" onClick={() => { setForm(initial); setErrors({}); setResult(null); setApplied(null); }} className="rounded-xl border border-border px-4 py-3 text-sm font-semibold text-muted">초기화</button></div>
     </form>
 
-    <ShareActions className="mt-5" title="육아휴직급여 계산기" text={result ? `${result.leaveMonths}개월 총 예상 육아휴직급여는 ${formatWon(result.totalBenefitWon)}입니다.` : "통상임금과 휴직 기간으로 예상 육아휴직급여를 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} />
+    <ShareActions className="mt-5" title="육아휴직급여 계산기" text={result ? `${result.leaveMonths}개월 총 예상 육아휴직급여는 ${formatWon(result.totalBenefitWon)}입니다.` : "통상임금과 휴직 기간으로 예상 육아휴직급여를 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} onKakaoShare={kakaoShareAdapter} />
     <div aria-live="polite" className="mt-8 space-y-5">{result && applied && <>
       <section className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary-soft via-surface to-surface p-6 shadow-[0_20px_60px_-36px_rgba(82,112,220,.45)] sm:p-8"><p className="text-sm font-semibold text-muted">총 예상 육아휴직급여</p><p className="mt-2 text-4xl font-bold tracking-[-0.04em] text-primary tabular-nums sm:text-5xl">{formatWon(result.totalBenefitWon)}</p><p className="mt-5 font-semibold">{schemeLabels[result.scheme]} · {result.leaveMonths}개월</p><p className="mt-1 text-sm text-muted">{formatKoreanDate(result.startDate)}부터 {formatKoreanDate(result.endDate)}까지 · 월평균 {formatWon(result.averageBenefitWon)}</p>{result.conditional && <p className="mt-3 rounded-lg bg-warning-soft px-3 py-2 text-sm text-warning-foreground">배우자의 예정된 육아휴직을 전제로 한 조건부 예상액입니다.</p>}</section>
       <SectionCard title="계산 요약" icon={<Icon name="result" />}><dl className="grid gap-4 text-sm sm:grid-cols-2 lg:grid-cols-4"><div><dt className="text-muted">적용 유형</dt><dd className="mt-1 font-semibold">{schemeLabels[result.scheme]}</dd></div><div><dt className="text-muted">특례 적용</dt><dd className="mt-1 font-semibold">{result.specialMonths ? `${result.specialMonths}개월` : "없음"}</dd></div><div><dt className="text-muted">특례 소계</dt><dd className="mt-1 font-semibold text-primary">{formatWon(result.specialSubtotalWon)}</dd></div><div><dt className="text-muted">일반 소계</dt><dd className="mt-1 font-semibold">{formatWon(result.generalSubtotalWon)}</dd></div></dl>{result.notices.map((notice) => <p key={notice} className="mt-3 rounded-lg bg-surface-subtle px-3 py-2 text-sm leading-6 text-muted">{notice}</p>)}</SectionCard>

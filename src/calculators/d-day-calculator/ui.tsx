@@ -14,6 +14,7 @@
  * className="sr-only">` + 스타일 입힌 `<label>`)을 그대로 재사용한다(ARCHITECTURE.md "3.3").
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { IntroSection } from "@/components/calculator/IntroSection";
@@ -22,6 +23,7 @@ import { ShareActions } from "@/components/calculator/ShareActions";
 import { UsageGuide } from "@/components/calculator/UsageGuide";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import {
   D_DAY_ASSUMPTION_NOTICES,
   D_DAY_INTRO_PARAGRAPHS,
@@ -376,7 +378,7 @@ export default function DdayCalculatorUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">날짜</p>
+        <Link href="/categories/date" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">날짜</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">디데이 계산기</h1>
         <p className="mt-3 text-base leading-7 text-muted">
           시작일부터 목표일까지 남은(또는 지난) 날짜를 D-Day로 계산하거나, 기준일에 며칠을
@@ -652,6 +654,7 @@ export default function DdayCalculatorUi() {
         text={shareText}
         url={baseUrl ? (shareState ? buildStateShareUrl(baseUrl, shareState) : baseUrl) : undefined}
         mode={hasActiveResult ? "result" : "calculator"}
+        onKakaoShare={kakaoShareAdapter}
       />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}

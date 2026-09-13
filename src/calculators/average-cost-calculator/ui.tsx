@@ -11,6 +11,7 @@
  * 콤마는 표시용으로만 삽입/제거한다(순수 문자열 처리, ARCHITECTURE.md "4." 마지막 문단).
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { IntroSection } from "@/components/calculator/IntroSection";
@@ -19,6 +20,7 @@ import { ShareActions } from "@/components/calculator/ShareActions";
 import { UsageGuide } from "@/components/calculator/UsageGuide";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import {
   AVERAGE_COST_ASSUMPTION_NOTICES,
   AVERAGE_COST_INTRO_PARAGRAPHS,
@@ -238,7 +240,7 @@ export default function AverageCostCalculatorUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">금융</p>
+        <Link href="/categories/finance" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">금융</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">평단가(물타기) 계산기</h1>
         <p className="mt-3 text-base leading-7 text-muted">
           보유 수량·평단가와 추가 매수 수량·단가를 입력하면, 매수 후 새로운 평단가와 총
@@ -393,6 +395,7 @@ export default function AverageCostCalculatorUi() {
             : undefined
         }
         mode={result ? "result" : "calculator"}
+        onKakaoShare={kakaoShareAdapter}
       />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}

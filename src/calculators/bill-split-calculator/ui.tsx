@@ -13,6 +13,7 @@
  * 활성화된다(SPEC.md 화면 구성 6→7→8 순서, ARCHITECTURE.md "5.5").
  */
 
+import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { IntroSection } from "@/components/calculator/IntroSection";
@@ -21,6 +22,7 @@ import { ShareActions } from "@/components/calculator/ShareActions";
 import { UsageGuide } from "@/components/calculator/UsageGuide";
 import { useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import {
   BILL_SPLIT_ASSUMPTION_NOTICES,
   BILL_SPLIT_INTRO_PARAGRAPHS,
@@ -341,7 +343,7 @@ export default function BillSplitCalculatorUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">생활</p>
+        <Link href="/categories/life" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">생활</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">더치페이 계산기</h1>
         <p className="mt-3 text-base leading-7 text-muted">
           균등 분배·한명 몰아주기·사다리타기 세 가지 방식으로 모임 비용을 나눠 보세요. 결과는
@@ -549,6 +551,7 @@ export default function BillSplitCalculatorUi() {
             : undefined
         }
         mode={computed && revealed ? "result" : "calculator"}
+        onKakaoShare={kakaoShareAdapter}
       />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}

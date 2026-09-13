@@ -14,6 +14,7 @@
  * "draft"로 유지된다. 이 파일의 UI 구현이 끝났다는 사실이 published 전환을 의미하지 않는다.
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { IntroSection } from "@/components/calculator/IntroSection";
@@ -22,6 +23,7 @@ import { ShareActions } from "@/components/calculator/ShareActions";
 import { UsageGuide } from "@/components/calculator/UsageGuide";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import {
   NPB_INTRO_HIGHLIGHTS,
   NPB_INTRO_PARAGRAPHS,
@@ -195,7 +197,7 @@ export default function NationalPensionBenefitEstimateUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">세금/정책</p>
+        <Link href="/categories/tax" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">세금/정책</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">
           국민연금 예상수령액 계산기
         </h1>
@@ -359,6 +361,7 @@ export default function NationalPensionBenefitEstimateUi() {
         text={shareText}
         url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined}
         mode={result ? "result" : "calculator"}
+        onKakaoShare={kakaoShareAdapter}
       />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}

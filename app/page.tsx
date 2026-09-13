@@ -1,5 +1,11 @@
+import { CalculatorCard } from "@/components/calculator/CalculatorCard";
 import { CategorySection } from "@/components/calculator/CategorySection";
-import { getPublishedCalculatorsGroupedByCategory } from "@/src/calculators/registry";
+import {
+  getPublishedCalculatorsGroupedByCategory,
+  getRecentlyAddedCalculators,
+} from "@/src/calculators/registry";
+
+const RECENT_CALCULATORS_LIMIT = 6;
 
 /**
  * 홈페이지 계산기 목록 — 레지스트리 기반으로 동적 생성한다 (docs/ARCHITECTURE.md SEO 규칙 5번).
@@ -13,6 +19,7 @@ import { getPublishedCalculatorsGroupedByCategory } from "@/src/calculators/regi
  */
 export default function Home() {
   const groups = getPublishedCalculatorsGroupedByCategory();
+  const recentCalculators = getRecentlyAddedCalculators(RECENT_CALCULATORS_LIMIT);
 
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-16 sm:px-8 sm:py-24">
@@ -32,6 +39,21 @@ export default function Home() {
           <span>공식과 근거 공개</span>
         </div>
       </section>
+
+      {recentCalculators.length > 0 && (
+        <section aria-labelledby="recent-calculators" className="mt-12">
+          <h2 id="recent-calculators" className="text-sm font-semibold text-muted">
+            최근 추가된 계산기
+          </h2>
+          <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {recentCalculators.map((calculator) => (
+              <li key={calculator.slug}>
+                <CalculatorCard calculator={calculator} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {groups.length === 0 ? (
         <p className="mt-10 rounded-lg border border-dashed border-black/15 p-6 text-sm text-zinc-500 dark:border-white/20 dark:text-zinc-400">

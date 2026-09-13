@@ -3,6 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CategoryNav } from "@/components/calculator/CategoryNav";
+import { SiteSearch } from "@/components/calculator/SiteSearch";
+import {
+  categoryLabels,
+  getPublishedCalculators,
+} from "@/src/calculators/registry";
 import { siteUrl } from "@/src/lib/site-config";
 import "./globals.css";
 
@@ -65,6 +70,15 @@ const themeInitScript = `
 `;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  // 검색 패널(SiteSearch, 클라이언트 컴포넌트)에 넘길 정적 데이터 — registry.ts 자체가 아니라
+  // 이미 계산해 둔 published 목록만 최소 필드로 직렬화해 전달한다.
+  const searchableCalculators = getPublishedCalculators().map((calculator) => ({
+    slug: calculator.slug,
+    title: calculator.title,
+    description: calculator.description,
+    categoryLabel: categoryLabels[calculator.category],
+  }));
+
   return (
     <html
       lang="ko"
@@ -101,14 +115,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
             <div className="flex shrink-0 items-center gap-2.5">
               <CategoryNav />
+              <SiteSearch calculators={searchableCalculators} />
               <ThemeToggle />
             </div>
           </div>
         </header>
         <main className="flex flex-1 flex-col">{children}</main>
         <footer className="border-t border-border bg-surface py-8 text-center text-sm text-muted">
-          <p>모든 계산은 브라우저 안에서 처리되며 입력값은 저장되지 않습니다.</p>
-          <nav aria-label="사이트 정보" className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-1.5">
+          <nav aria-label="사이트 정보" className="flex flex-wrap justify-center gap-x-5 gap-y-1.5">
             <Link href="/about" className="hover:text-foreground">서비스 소개</Link>
             <Link href="/contact" className="hover:text-foreground">문의하기</Link>
             <Link href="/privacy" className="hover:text-foreground">개인정보처리방침</Link>

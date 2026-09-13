@@ -13,6 +13,7 @@
  * (docs/ARCHITECTURE.md "계산 로직 / UI 분리").
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { IntroSection } from "@/components/calculator/IntroSection";
@@ -21,6 +22,7 @@ import { ShareActions } from "@/components/calculator/ShareActions";
 import { UsageGuide } from "@/components/calculator/UsageGuide";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import {
   LOAN_INTEREST_ASSUMPTION_NOTICES,
   LOAN_INTEREST_INTRO_PARAGRAPHS,
@@ -296,7 +298,7 @@ export default function LoanInterestCalculatorUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">금융</p>
+        <Link href="/categories/finance" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">금융</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">대출 이자 계산기</h1>
         <p className="mt-3 text-base leading-7 text-muted">
           대출 원금·연이율·대출 기간과 상환방식을 입력하면 매월(회차별) 상환액과 총 이자·총
@@ -519,6 +521,7 @@ export default function LoanInterestCalculatorUi() {
             : undefined
         }
         mode={result ? "result" : "calculator"}
+        onKakaoShare={kakaoShareAdapter}
       />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}

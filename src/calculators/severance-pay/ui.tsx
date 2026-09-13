@@ -16,6 +16,7 @@
  * FORMULA.md "소개 문구" / "FAQ 콘텐츠" 절을 그대로 옮긴 것이며 새로 지어내지 않았다.
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { calculateSeverancePay } from "./logic";
 import {
@@ -39,6 +40,7 @@ import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { ShareActions } from "@/components/calculator/ShareActions";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 
 const EMPTY_FORM: RawSeverancePayFormInput = {
   hireDate: "",
@@ -464,7 +466,7 @@ export default function SeverancePayCalculatorUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">노동/근로</p>
+        <Link href="/categories/labor" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">노동/근로</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">
           퇴직금 계산기
         </h1>
@@ -596,7 +598,7 @@ export default function SeverancePayCalculatorUi() {
         </div>
       </form>
 
-      <ShareActions className="mt-5" title="퇴직금 계산기" text={result ? (result.eligible ? `예상 퇴직금은 ${formatWon(result.severancePay)}입니다.` : "입력한 조건은 법정 퇴직금 지급요건에 해당하지 않습니다.") : "입사일과 퇴사 전 임금으로 예상 퇴직금을 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} />
+      <ShareActions className="mt-5" title="퇴직금 계산기" text={result ? (result.eligible ? `예상 퇴직금은 ${formatWon(result.severancePay)}입니다.` : "입력한 조건은 법정 퇴직금 지급요건에 해당하지 않습니다.") : "입사일과 퇴사 전 임금으로 예상 퇴직금을 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} onKakaoShare={kakaoShareAdapter} />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}
       <div aria-live="polite" className="mt-8 space-y-5">

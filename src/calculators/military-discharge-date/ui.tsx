@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { SectionCard } from "@/components/calculator/SectionCard";
 import { ShareActions } from "@/components/calculator/ShareActions";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import { militaryDischargeFaqItems } from "./content";
 import { formatDday, formatDuration, formatKoreanDate, formatPercent, formatShortDate } from "./formatting";
 import { calculateMilitaryDischarge } from "./logic";
@@ -65,7 +67,7 @@ export default function MilitaryDischargeDateUi() {
   }
 
   return <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
-    <header className="max-w-3xl"><p className="mb-3 text-sm font-semibold text-primary">날짜</p><h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">전역일 계산기</h1><p className="mt-3 text-base leading-7 text-muted">복무 유형과 시작일로 예상 전역일, 남은 기간과 복무 진행률을 계산합니다.</p></header>
+    <header className="max-w-3xl"><Link href="/categories/date" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">날짜</Link><h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">전역일 계산기</h1><p className="mt-3 text-base leading-7 text-muted">복무 유형과 시작일로 예상 전역일, 남은 기간과 복무 진행률을 계산합니다.</p></header>
 
     <form onSubmit={submit} className="mt-10 space-y-7 rounded-2xl border border-border bg-surface p-5 sm:p-8" noValidate>
       <fieldset><legend className="text-sm font-semibold">복무 종류</legend><div className="mt-3 flex flex-wrap gap-2">{(Object.entries(serviceGroupLabels) as [ServiceGroup,string][]).map(([key,label]) => <label key={key} className={`cursor-pointer rounded-full border px-4 py-2.5 text-sm font-semibold transition focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 ${group === key ? "border-primary bg-primary-soft text-primary" : "border-border bg-background text-muted hover:border-border-strong"}`}><input type="radio" name="service-group" value={key} checked={group === key} onChange={() => changeGroup(key)} className="sr-only" />{label}</label>)}</div></fieldset>
@@ -78,7 +80,7 @@ export default function MilitaryDischargeDateUi() {
       <div className="flex flex-wrap gap-3"><button className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground">전역일 계산하기</button><button type="button" onClick={() => { setGroup("active"); setForm({ serviceType: "army", startDate: today, referenceDate: today }); setResult(null); setAppliedInput(null); setErrors({}); }} className="rounded-xl border border-border px-4 py-3 text-sm font-semibold">오늘 입영 샘플</button><button type="button" onClick={() => { setGroup("active"); setForm({ serviceType: "army", startDate: "", referenceDate: today }); setResult(null); setAppliedInput(null); setErrors({}); }} className="rounded-xl border border-border px-4 py-3 text-sm font-semibold text-muted">초기화</button></div>
     </form>
 
-    <ShareActions className="mt-5" title="전역일 계산기" text={result ? `예상 ${result.policy.endTerm}은 ${formatKoreanDate(result.endDate)}입니다. ${resultSummary(result)}` : "복무 유형과 시작일로 예상 전역일과 남은 기간을 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} />
+    <ShareActions className="mt-5" title="전역일 계산기" text={result ? `예상 ${result.policy.endTerm}은 ${formatKoreanDate(result.endDate)}입니다. ${resultSummary(result)}` : "복무 유형과 시작일로 예상 전역일과 남은 기간을 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} onKakaoShare={kakaoShareAdapter} />
     <div aria-live="polite" className="mt-8 space-y-5">{result && appliedInput && <>
       <section className="overflow-hidden rounded-2xl border border-transparent bg-primary p-6 text-primary-foreground shadow-[0_20px_60px_-30px_rgba(49,87,213,.8)] dark:border-primary/25 dark:bg-gradient-to-br dark:from-primary-soft dark:via-surface dark:to-surface dark:text-foreground dark:shadow-[0_20px_60px_-32px_rgba(82,112,220,.45)] sm:p-8"><p className="text-sm font-semibold opacity-80 dark:text-muted dark:opacity-100">예상 {result.policy.endTerm}</p><p className="mt-2 text-3xl font-bold tracking-[-0.04em] tabular-nums dark:text-primary sm:text-5xl">{formatKoreanDate(result.endDate)}</p><p className="mt-5 text-lg font-semibold dark:text-foreground">{resultSummary(result)}</p><p className="mt-2 text-xs opacity-75 dark:text-muted dark:opacity-100">표준 복무기간 기준 예상치이며 실제 인사명령이 우선합니다.</p></section>
       <SectionCard title="상세 내역" icon={<SectionIcon name="document" />}><dl className="grid gap-4 text-sm sm:grid-cols-2"><div><dt className="text-muted">복무 유형</dt><dd className="mt-1 font-semibold">{result.policy.label}</dd></div><div><dt className="text-muted">{result.policy.startLabel}</dt><dd className="mt-1 font-semibold tabular-nums">{formatKoreanDate(result.startDate)}</dd></div><div><dt className="text-muted">표준 복무기간</dt><dd className="mt-1 font-semibold">{result.policy.months}개월 (날짜 경계 {result.serviceSpanDays.toLocaleString("ko-KR")}일)</dd></div><div><dt className="text-muted">정책 기준</dt><dd className="mt-1 font-semibold">현행 복무기간 · {SERVICE_POLICY_REVIEWED_AT} 검토</dd></div></dl></SectionCard>

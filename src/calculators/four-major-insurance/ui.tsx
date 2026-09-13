@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { SectionCard } from "@/components/calculator/SectionCard";
 import { ShareActions } from "@/components/calculator/ShareActions";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import { calculateFourMajorInsurance, employmentTierLabels } from "./logic";
 import { formatWon } from "./formatting";
 import { fourMajorInsuranceFaqItems } from "./content";
@@ -88,7 +90,7 @@ export default function FourMajorInsuranceUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">세금/정책</p>
+        <Link href="/categories/tax" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">세금/정책</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">4대 보험 계산기</h1>
         <p className="mt-3 text-base leading-7 text-muted">월 급여로 근로자와 사업주의 사회보험 부담액을 계산합니다.</p>
         <p className="mt-2 text-sm font-medium text-primary">2026년 7월 이후 기준</p>
@@ -132,7 +134,7 @@ export default function FourMajorInsuranceUi() {
         </div>
       </form>
 
-      <ShareActions className="mt-5" title="4대 보험 계산기" text={result ? `월 근로자 부담 보험료는 ${formatWon(result.employeeInsuranceTotal)}입니다.` : "월 급여로 근로자와 사업주의 4대 보험 부담액을 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} />
+      <ShareActions className="mt-5" title="4대 보험 계산기" text={result ? `월 근로자 부담 보험료는 ${formatWon(result.employeeInsuranceTotal)}입니다.` : "월 급여로 근로자와 사업주의 4대 보험 부담액을 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} onKakaoShare={kakaoShareAdapter} />
 
       <div aria-live="polite" className="mt-8 space-y-5">
         {result && appliedInput && <>

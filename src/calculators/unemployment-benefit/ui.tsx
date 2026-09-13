@@ -20,6 +20,7 @@
  * 재사용했다(새로 지어내지 않음).
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { diffDaysUtc, parseIsoDateUtc } from "@/src/lib/date-calc";
 import { calculateUnemploymentBenefit } from "./logic";
@@ -50,6 +51,7 @@ import { SectionCard } from "@/components/calculator/SectionCard";
 import { ShareActions } from "@/components/calculator/ShareActions";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 
 const EMPTY_FORM: RawUnemploymentBenefitFormInput = {
   leaveDate: "",
@@ -428,7 +430,7 @@ export default function UnemploymentBenefitCalculatorUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">노동/근로</p>
+        <Link href="/categories/labor" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">노동/근로</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">
           실업급여(구직급여) 계산기
         </h1>
@@ -512,7 +514,7 @@ export default function UnemploymentBenefitCalculatorUi() {
         </div>
       </form>
 
-      <ShareActions className="mt-5" title="실업급여 계산기" text={result ? (result.eligible ? `총 예상 구직급여는 ${formatWon(result.totalExpectedBenefit)}입니다.` : "입력한 가입기간은 구직급여 180일 요건에 미달합니다.") : "입사일·퇴사일과 임금으로 예상 구직급여를 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} />
+      <ShareActions className="mt-5" title="실업급여 계산기" text={result ? (result.eligible ? `총 예상 구직급여는 ${formatWon(result.totalExpectedBenefit)}입니다.` : "입력한 가입기간은 구직급여 180일 요건에 미달합니다.") : "입사일·퇴사일과 임금으로 예상 구직급여를 계산해 보세요."} url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined} mode={result ? "result" : "calculator"} onKakaoShare={kakaoShareAdapter} />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}
       <div aria-live="polite" className="mt-8 space-y-5">

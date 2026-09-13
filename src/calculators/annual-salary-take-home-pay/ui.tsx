@@ -10,6 +10,7 @@
  * 계산 공식은 이 파일에 두지 않는다(logic.ts). 이 파일은 폼 상태 관리와 표시만 담당한다.
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { IntroSection } from "@/components/calculator/IntroSection";
@@ -18,6 +19,7 @@ import { ShareActions } from "@/components/calculator/ShareActions";
 import { UsageGuide } from "@/components/calculator/UsageGuide";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import {
   ANNUAL_SALARY_INTRO_PARAGRAPHS,
   ANNUAL_SALARY_USAGE_STEPS,
@@ -211,7 +213,7 @@ export default function AnnualSalaryTakeHomePayUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">세금/정책</p>
+        <Link href="/categories/tax" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">세금/정책</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">연봉 실수령액 계산기</h1>
         <p className="mt-3 text-base leading-7 text-muted">
           세전 연봉을 입력하면 4대 보험과 근로소득세·지방소득세를 공제한 세후 월 실수령액(예상)을
@@ -364,6 +366,7 @@ export default function AnnualSalaryTakeHomePayUi() {
         }
         url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined}
         mode={result ? "result" : "calculator"}
+        onKakaoShare={kakaoShareAdapter}
       />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}

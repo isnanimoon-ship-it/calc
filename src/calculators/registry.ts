@@ -328,3 +328,15 @@ export function getPublishedCalculatorsGroupedByCategory(): CalculatorCategoryGr
     }))
     .filter((group) => group.calculators.length > 0);
 }
+
+/**
+ * `lastModified` 기준 최신순 상위 `limit`개 공개 계산기. 홈페이지 "최근 추가된 계산기"
+ * 섹션이 쓴다. `lastModified`는 항상 `YYYY-MM-DD` 문자열이므로 문자열 내림차순 정렬이 곧
+ * 최신순이다(날짜 파싱 불필요). 계산기가 늘어나도 호출부 수정 없이 최신 N개가 자동으로
+ * 갱신된다.
+ */
+export function getRecentlyAddedCalculators(limit: number): CalculatorMeta[] {
+  return [...getPublishedCalculators()]
+    .sort((a, b) => (a.lastModified < b.lastModified ? 1 : a.lastModified > b.lastModified ? -1 : 0))
+    .slice(0, limit);
+}

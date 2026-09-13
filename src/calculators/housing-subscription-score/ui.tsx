@@ -11,6 +11,7 @@
  * (docs/ARCHITECTURE.md "계산 로직 / UI 분리").
  */
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { FaqAccordion } from "@/components/calculator/FaqAccordion";
 import { IntroSection } from "@/components/calculator/IntroSection";
@@ -19,6 +20,7 @@ import { ShareActions } from "@/components/calculator/ShareActions";
 import { UsageGuide } from "@/components/calculator/UsageGuide";
 import { asShareRecord, useCalculatorShare } from "@/components/calculator/useCalculatorShare";
 import { buildStateShareUrl } from "@/src/lib/share";
+import { kakaoShareAdapter } from "@/src/lib/kakao-share";
 import {
   HOUSING_SCORE_INTRO_PARAGRAPHS,
   HOUSING_SCORE_USAGE_STEPS,
@@ -282,7 +284,7 @@ export default function HousingSubscriptionScoreUi() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-14">
       <header className="max-w-3xl">
-        <p className="mb-3 text-sm font-semibold text-primary">세금/정책</p>
+        <Link href="/categories/tax" className="mb-3 inline-block text-sm font-semibold text-primary hover:underline">세금/정책</Link>
         <h1 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">청약가점 계산기</h1>
         <p className="mt-3 text-base leading-7 text-muted">
           무주택기간·부양가족수·청약통장 가입기간을 입력하면 민영주택 일반공급 가점제 예상
@@ -765,6 +767,7 @@ export default function HousingSubscriptionScoreUi() {
         }
         url={baseUrl ? (result ? buildStateShareUrl(baseUrl, { f: form }) : baseUrl) : undefined}
         mode={result ? "result" : "calculator"}
+        onKakaoShare={kakaoShareAdapter}
       />
 
       {/* ── 결과 ─────────────────────────────────────────────────────── */}
