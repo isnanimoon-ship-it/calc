@@ -1,0 +1,2 @@
+import {describe,expect,it} from "vitest";import {rankPay,servicePolicies,standardRankMonths} from "./policy";
+describe("2026 군 급여 정책",()=>{it("병 계급별 봉급을 고정한다",()=>expect(rankPay).toEqual({"private-2":750000,"private-1":900000,corporal:1200000,sergeant:1500000}));it("복무형태별 총개월과 계급개월 합이 같다",()=>{for(const policy of Object.values(servicePolicies))expect(Object.values(standardRankMonths(policy.months)).reduce((a,b)=>a+b,0)).toBe(policy.months)});});

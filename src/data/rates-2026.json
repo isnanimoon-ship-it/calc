@@ -1,0 +1,288 @@
+{
+  "year": 2026,
+  "minimumWage": {
+    "hourly": {
+      "value": 10320,
+      "unit": "원/시간",
+      "note": "여러 정책형 계산기(실업급여 최저구직급여일액, 주휴수당 계산기의 '최저임금 미만' 참고 경고, 향후 추가될 최저임금 관련 계산기 등)가 공유하는 값이라 계산기별 네임스페이스가 아니라 이 파일의 최상위에 둔다. (2026-09-04 주휴수당 계산기 Architect 라운드) source 문구를 고시 번호까지 정확히 반영하도록 정정했다 — 값 10,320원은 그대로이며 tasks/weekly-holiday-allowance/FORMULA.md '기준/출처'에서 2026-09-04 재확인했다.",
+      "source": {
+        "law": "최저임금법 제10조",
+        "article": "고용노동부 고시 제2025-47호(2025-08-05 고시, 2026-01-01 시행)",
+        "effectiveDate": "2026-01-01",
+        "url": "https://www.moel.go.kr"
+      },
+      "lastVerified": "2026-09-04",
+      "nextReviewDue": "2027-01-01"
+    }
+  },
+  "laborStandards": {
+    "note": "근로기준법상 법정 상수(연도와 무관). 최저임금(minimumWage)이 '여러 계산기가 공유하므로 최상위'인 것과 같은 논리로 계산기별 네임스페이스가 아니라 최상위에 둔다 — 주휴수당 계산기 외에 향후 연장근로수당 계산기(주 40·일 8 초과 가산), 최저임금 계산기(주 40 + 주휴 8 → 월 209시간)도 정확히 같은 값을 쓴다. 최초 도입: 2026-09-04 주휴수당 계산기 Architect 라운드(tasks/weekly-holiday-allowance/FORMULA.md '연도별 데이터 파일 스키마' 초안).",
+    "statutoryWeeklyHours": {
+      "value": 40,
+      "unit": "시간",
+      "note": "법정 기준근로시간. 주휴시간 비례식의 분모이자 40시간 상한.",
+      "source": { "law": "근로기준법", "article": "제50조제1항" },
+      "lastVerified": "2026-09-04",
+      "nextReviewDue": "2027-01-01"
+    },
+    "statutoryDailyHours": {
+      "value": 8,
+      "unit": "시간",
+      "note": "법정 1일 기준근로시간. 유급주휴시간 상한.",
+      "source": { "law": "근로기준법", "article": "제50조제2항" },
+      "lastVerified": "2026-09-04",
+      "nextReviewDue": "2027-01-01"
+    },
+    "ultraShortTimeWeeklyHours": {
+      "value": 15,
+      "unit": "시간",
+      "note": "4주 평균 1주 소정근로시간이 이 값 미만이면 제55조(주휴)·제60조(연차) 미적용. 주휴수당 계산기는 게이팅하지 않고 경고에만 사용한다.",
+      "source": { "law": "근로기준법", "article": "제18조제3항" },
+      "lastVerified": "2026-09-04",
+      "nextReviewDue": "2027-01-01"
+    },
+    "monthlyWeekFactor": {
+      "value": { "daysPerYear": 365, "monthsPerYear": 12, "daysPerWeek": 7 },
+      "unit": "주/월",
+      "note": "월 환산 계수. 계산 시 365 / 12 / 7 = 365/84 ≈ 4.345238 유리수로 사용한다(미리 4.345로 반올림 금지, 나눗셈은 곱셈 뒤 마지막에 1회). 고용노동부 최저임금 월환산(209시간) 산출에 쓰는 계수와 동일하나, 209는 이를 정수로 올린 값이라 이 계산기 결과와 미세한 차이가 발생한다(FORMULA.md '월 환산 계수' 참고).",
+      "source": { "law": "관행(고용노동부 최저임금 월 환산 고시 등)", "article": "-" },
+      "lastVerified": "2026-09-04",
+      "nextReviewDue": "2027-01-01"
+    }
+  },
+  "unemploymentBenefit": {
+    "benefitRate": {
+      "value": 0.6,
+      "unit": "ratio",
+      "source": {
+        "law": "고용보험법",
+        "article": "제46조제1항제1호",
+        "effectiveDate": "2019-10-01",
+        "url": "https://www.law.go.kr/법령/고용보험법"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "standardDailyWorkHours": {
+      "value": 8,
+      "unit": "시간",
+      "note": "최저구직급여일액 산정 시 '1일 소정근로시간'을 개별 입력받지 않는 v1의 단순화 가정. 실제 소정근로시간이 다른 사용자(예: 시간제 근로자)는 결과가 달라질 수 있다 — 결과 화면에 이 가정을 안내할 것을 권고(tasks/unemployment-benefit/FORMULA.md '여전히 남아있는 확인 필요 항목' 3번).",
+      "source": {
+        "law": "고용보험법",
+        "article": "제46조제1항제2호 (1일 소정근로시간 × 최저임금)",
+        "effectiveDate": "2019-10-01"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "minBenefitDailyRatio": {
+      "value": 0.8,
+      "unit": "ratio",
+      "source": {
+        "law": "고용보험법",
+        "article": "제46조제1항제2호",
+        "effectiveDate": "2019-10-01"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "minBenefitDailyAmount": {
+      "value": 66048,
+      "unit": "원/일",
+      "note": "minimumWage.hourly.value × unemploymentBenefit.standardDailyWorkHours.value × unemploymentBenefit.minBenefitDailyRatio.value = 10320 × 8 × 0.8. 재산정 시 이 세 필드로부터 다시 계산해 이 저장값과 일치하는지 검증할 수 있다(실제로 정확히 일치함을 산술로 재검증했다).",
+      "source": {
+        "law": "고용보험법 시행령",
+        "article": "관련 시행령 조항(정확한 조번호 확인 필요)",
+        "effectiveDate": "2026-01-01",
+        "url": "확인 필요"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "baseWageDailyCap": {
+      "value": 113500,
+      "unit": "원/일",
+      "source": {
+        "law": "고용보험법 시행령",
+        "article": "제68조제1항",
+        "effectiveDate": "2025-12-30",
+        "url": "확인 필요(관보 원문 미열람)"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "maxBenefitDailyAmount": {
+      "value": 68100,
+      "unit": "원/일",
+      "note": "unemploymentBenefit.baseWageDailyCap.value × unemploymentBenefit.benefitRate.value = 113500 × 0.6.",
+      "source": {
+        "law": "고용보험법",
+        "article": "제45조제5항, 제46조제1항제1호, 시행령 제68조제1항",
+        "effectiveDate": "2025-12-30"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "waitingPeriodDays": {
+      "value": 7,
+      "unit": "일",
+      "note": "금액 계산에 영향을 주지 않는 안내용 상수. 최종 이직 당시 건설일용근로자였던 경우의 예외(단서)는 v1에서 반영하지 않는다.",
+      "source": {
+        "law": "고용보험법",
+        "article": "제49조",
+        "effectiveDate": "확인 필요(현행 조문 시행일)"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "insuredUnitPeriodRequiredDays": {
+      "value": 180,
+      "unit": "일",
+      "source": {
+        "law": "고용보험법",
+        "article": "제40조제1항제1호"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "referencePeriodMonths": {
+      "standard": 18,
+      "ultraShortTimeWorker": 24,
+      "unit": "개월",
+      "note": "v1은 이 기준기간 자체를 계산에 반영하지 않는다 — isUltraShortTimeWorker=true일 때 안내 문구에만 사용한다(tasks/unemployment-benefit/FORMULA.md '예외' 참고).",
+      "source": {
+        "law": "고용보험법",
+        "article": "제40조제1항·제2항"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01"
+    },
+    "benefitDaysTable": {
+      "note": "행: 가입기간(피보험기간) 구간(하한 포함, 상한 미포함). 열: 연령 구간(50세 미만 / 50세 이상 및 장애인). insuredYearsMax가 null인 행은 상한 없음(그 이상 전부).",
+      "source": {
+        "law": "고용보험법",
+        "article": "제50조제1항, 별표1",
+        "effectiveDate": "2019-10-01(2019.8.27 개정, 2019.10.1 이후 이직자 적용)"
+      },
+      "lastVerified": "2026-09-02",
+      "nextReviewDue": "2027-01-01",
+      "rows": [
+        { "insuredYearsMin": 0, "insuredYearsMax": 1, "under50Days": 120, "over50OrDisabledDays": 120 },
+        { "insuredYearsMin": 1, "insuredYearsMax": 3, "under50Days": 150, "over50OrDisabledDays": 180 },
+        { "insuredYearsMin": 3, "insuredYearsMax": 5, "under50Days": 180, "over50OrDisabledDays": 210 },
+        { "insuredYearsMin": 5, "insuredYearsMax": 10, "under50Days": 210, "over50OrDisabledDays": 240 },
+        { "insuredYearsMin": 10, "insuredYearsMax": null, "under50Days": 240, "over50OrDisabledDays": 270 }
+      ]
+    }
+  },
+  "socialInsurance": {
+    "effectiveFrom": "2026-07-01",
+    "effectiveTo": "2027-06-30",
+    "nationalPension": {
+      "totalRate": { "value": 0.095, "numerator": 95, "denominator": 1000, "unit": "ratio", "source": { "law": "국민연금법", "article": "2026년 사업장가입자 보험료율", "effectiveDate": "2026-01-01", "url": "https://www.nps.or.kr" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "employeeRate": { "value": 0.0475, "numerator": 475, "denominator": 10000, "unit": "ratio", "source": { "law": "국민연금법", "article": "사업장가입자 기여금", "effectiveDate": "2026-01-01", "url": "https://www.nps.or.kr" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "employerRate": { "value": 0.0475, "numerator": 475, "denominator": 10000, "unit": "ratio", "source": { "law": "국민연금법", "article": "사업장가입자 부담금", "effectiveDate": "2026-01-01", "url": "https://www.nps.or.kr" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "standardMonthlyIncomeMin": { "value": 410000, "unit": "원/월", "source": { "law": "국민연금법 시행령", "article": "2026년도 기준소득월액 하한", "effectiveDate": "2026-07-01", "url": "https://www.nps.or.kr" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "standardMonthlyIncomeMax": { "value": 6590000, "unit": "원/월", "source": { "law": "국민연금법 시행령", "article": "2026년도 기준소득월액 상한", "effectiveDate": "2026-07-01", "url": "https://www.nps.or.kr" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "standardMonthlyIncomeUnit": { "value": 1000, "unit": "원", "source": { "law": "국민연금법령", "article": "기준소득월액 천원 미만 절사" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "premiumRoundingUnit": { "value": 10, "unit": "원", "source": { "law": "국민연금법", "article": "제117조" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" }
+    },
+    "healthInsurance": {
+      "totalRate": { "value": 0.0719, "numerator": 719, "denominator": 10000, "unit": "ratio", "source": { "law": "국민건강보험법", "article": "2026년도 직장가입자 보험료율", "effectiveDate": "2026-01-01", "url": "https://edi.nhis.or.kr/portal/images/popup/20251204_pop01longdesc.html" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "employeeRate": { "value": 0.03595, "numerator": 3595, "denominator": 100000, "unit": "ratio", "source": { "law": "국민건강보험법", "article": "직장가입자 50% 부담", "effectiveDate": "2026-01-01" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "employerRate": { "value": 0.03595, "numerator": 3595, "denominator": 100000, "unit": "ratio", "source": { "law": "국민건강보험법", "article": "사용자 50% 부담", "effectiveDate": "2026-01-01" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "monthlyPremiumMin": { "value": 20160, "unit": "원/월", "source": { "law": "보건복지부고시 제2025-222호", "article": "직장가입자 보수월액보험료 하한", "effectiveDate": "2026-01-01", "url": "https://www.law.go.kr" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "monthlyPremiumMax": { "value": 9183480, "unit": "원/월", "source": { "law": "보건복지부고시 제2025-222호", "article": "직장가입자 보수월액보험료 상한", "effectiveDate": "2026-01-01", "url": "https://www.law.go.kr" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "longTermCareRate": { "value": 0.009448, "numerator": 9448, "denominator": 1000000, "unit": "ratio", "source": { "law": "노인장기요양보험법", "article": "2026년도 장기요양보험료율", "effectiveDate": "2026-01-01", "url": "https://edi.nhis.or.kr/portal/images/popup/20251204_pop01longdesc.html" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "premiumRoundingUnit": { "value": 10, "unit": "원", "source": { "law": "사회보험 통합징수 실무", "article": "10원 미만 단수 처리" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" }
+    },
+    "employmentInsurance": {
+      "employeeUnemploymentRate": { "value": 0.009, "numerator": 9, "denominator": 1000, "unit": "ratio", "source": { "law": "고용보험 및 산업재해보상보험의 보험료징수 등에 관한 법률", "article": "실업급여 근로자 부담", "effectiveDate": "2022-07-01", "url": "https://www.moel.go.kr/info/astmgmt/employ/employList.do" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "employerUnemploymentRate": { "value": 0.009, "numerator": 9, "denominator": 1000, "unit": "ratio", "source": { "law": "고용보험 및 산업재해보상보험의 보험료징수 등에 관한 법률", "article": "실업급여 사업주 부담", "effectiveDate": "2022-07-01", "url": "https://www.moel.go.kr/info/astmgmt/employ/employList.do" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "employerExtraRates": {
+        "under150": { "value": 0.0025, "numerator": 25, "denominator": 10000, "unit": "ratio" },
+        "priorityOver150": { "value": 0.0045, "numerator": 45, "denominator": 10000, "unit": "ratio" },
+        "between150And999": { "value": 0.0065, "numerator": 65, "denominator": 10000, "unit": "ratio" },
+        "over1000OrGovernment": { "value": 0.0085, "numerator": 85, "denominator": 10000, "unit": "ratio" }
+      },
+      "premiumRoundingUnit": { "value": 10, "unit": "원", "source": { "law": "사회보험 통합징수 실무", "article": "10원 미만 단수 처리" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" }
+    },
+    "workersCompensation": {
+      "averageRate": { "value": 0.0147, "unit": "ratio", "note": "안내용 평균요율이며 개별 사업장 계산에 사용 금지", "source": { "law": "고용노동부 2026년도 산재보험료율 고시", "article": "28개 사업종류 평균 및 출퇴근재해요율", "effectiveDate": "2026-01-01", "url": "https://www.moel.go.kr" }, "lastVerified": "2026-09-04", "nextReviewDue": "2027-01-01" },
+      "employeeRate": 0,
+      "calculationSupported": false
+    }
+  },
+  "nationalPensionBenefit": {
+    "note": "national-pension-benefit-estimate 전용 네임스페이스(tasks/national-pension-benefit-estimate/FORMULA.md '정책 데이터 분리 요구사항' 그대로 반영, Architect 라운드 2026-09-13). standardMonthlyIncomeMin/Max는 신규 생성하지 않고 위 socialInsurance.nationalPension.standardMonthlyIncomeMin/Max를 코드에서 그대로 참조한다(중복 금지). aValue(매년 12월 갱신)와 proportionalConstant(43% 고정 유지 여부, 매년 1월 확인) 두 값은 서로 다른 재검토 주기를 가지므로 하나의 일정으로 묶지 않는다 — 아래 각 항목의 nextReviewDue를 개별적으로 확인할 것.",
+    "aValue": {
+      "value": 3193511,
+      "unit": "원/월",
+      "note": "2025.12~2026.11 적용 A값(전체가입자 3년 평균소득월액 평균). 매년 12월 1일 갱신(연 1회) — 최저임금(1월)·기준소득월액상하한(7월)과 갱신월이 다르므로 혼동 주의.",
+      "source": { "law": "국민연금법", "article": "제51조제1항제1호", "effectiveDate": "2025-12-01", "url": "https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0048M0.do" },
+      "lastVerified": "2026-09-13",
+      "nextReviewDue": "2026-12-01"
+    },
+    "proportionalConstant": {
+      "value": 1.29,
+      "unit": "ratio",
+      "note": "2026년부터 43% 소득대체율로 고정(2025년 연금개혁, 법률 제21203호). 원래 부칙 스케줄(2028년 1.2까지 인하)은 폐기됨. V1은 이 단일값을 가입 전체 기간에 균일 적용하는 근사를 쓴다 — FORMULA.md '1-c' 참고.",
+      "source": { "law": "국민연금법", "article": "제51조제1항 (2025-12-16 법률 제21203호 일부개정)", "effectiveDate": "2026-01-01", "url": "https://www.mohw.go.kr" },
+      "lastVerified": "2026-09-13",
+      "nextReviewDue": "2027-01-01"
+    },
+    "minEligibleMonths": {
+      "value": 120,
+      "unit": "개월",
+      "note": "1988년 제정 당시 180개월(15년)이었으나 1998년 전면개정(법률 제5623호, 1999-01-01 시행)으로 120개월로 단축, 이후 변경 없음.",
+      "source": { "law": "국민연금법", "article": "제61조제1항" },
+      "lastVerified": "2026-09-13",
+      "nextReviewDue": "2027-01-01"
+    },
+    "baseMonthsForFullRate": {
+      "value": 240,
+      "unit": "개월",
+      "note": "기본연금액 산정의 20년 기준점. 미만이면 월수/240 비례, 초과면 초과 1년(12개월)마다 5%p 가산.",
+      "source": { "law": "국민연금법", "article": "제51조제1항" },
+      "lastVerified": "2026-09-13",
+      "nextReviewDue": "2027-01-01"
+    },
+    "excessYearBonusRate": {
+      "value": 0.05,
+      "unit": "ratio (연 5%)",
+      "source": { "law": "국민연금법", "article": "제51조제1항 (20년 초과 가산)" },
+      "lastVerified": "2026-09-13",
+      "nextReviewDue": "2027-01-01"
+    },
+    "pensionableAgeSchedule": {
+      "note": "행: 출생연도 구간(하한·상한 모두 포함). 상향 스케줄은 2033년 65세로 완성되어 이후 변경 없음.",
+      "source": { "law": "국민연금법", "article": "제61조, 1998년 전면개정 부칙(법률 제5623호)" },
+      "lastVerified": "2026-09-13",
+      "nextReviewDue": "2027-01-01",
+      "rows": [
+        { "birthYearMin": null, "birthYearMax": 1952, "age": 60 },
+        { "birthYearMin": 1953, "birthYearMax": 1956, "age": 61 },
+        { "birthYearMin": 1957, "birthYearMax": 1960, "age": 62 },
+        { "birthYearMin": 1961, "birthYearMax": 1964, "age": 63 },
+        { "birthYearMin": 1965, "birthYearMax": 1968, "age": 64 },
+        { "birthYearMin": 1969, "birthYearMax": null, "age": 65 }
+      ]
+    },
+    "earlyPension": {
+      "maxMonths": 60,
+      "monthlyReductionRate": 0.005,
+      "unit": "개월 / ratio(월 0.5%)",
+      "source": { "law": "국민연금법", "article": "제61조제2항(요건), 제63조(감액 산정)" },
+      "lastVerified": "2026-09-13",
+      "nextReviewDue": "2027-01-01"
+    },
+    "deferredPension": {
+      "maxMonths": 60,
+      "monthlyIncreaseRate": 0.006,
+      "unit": "개월 / ratio(월 0.6%)",
+      "source": { "law": "국민연금법", "article": "제62조, 부칙(법률 제11143호 제6조, 법률 제13100호 제4조)" },
+      "lastVerified": "2026-09-13",
+      "nextReviewDue": "2027-01-01"
+    }
+  }
+}

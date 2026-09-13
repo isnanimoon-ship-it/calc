@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/*
+ * 다크모드는 `prefers-color-scheme` 미디어쿼리가 아니라 <html> 요소의 `.dark`
+ * 클래스로 제어한다 (사용자가 라이트/다크/시스템을 직접 토글할 수 있어야 하므로).
+ * app/layout.tsx의 인라인 스크립트가 hydration 전에 클래스를 설정하고,
+ * components/theme-toggle.tsx가 이후 토글을 담당한다.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --background: #f6f7f9;
+  --foreground: #16181d;
+  --surface: #ffffff;
+  --surface-subtle: #eef1f5;
+  --surface-strong: #e6eaf0;
+  --muted: #667085;
+  --border: #e1e5eb;
+  --border-strong: #cbd2dc;
+  --primary: #3157d5;
+  --primary-hover: #2949b7;
+  --primary-soft: #eaf0ff;
+  --primary-foreground: #ffffff;
+  --danger: #c43245;
+  --warning-surface: #fff8e7;
+  --warning-border: #f1d38a;
+  --warning: #9a6700;
+  --warning-foreground: #684600;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-strong: var(--surface-strong);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-danger: var(--danger);
+  --color-warning-surface: var(--warning-surface);
+  --color-warning-border: var(--warning-border);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #101217;
+  --foreground: #f2f4f7;
+  --surface: #191c23;
+  --surface-subtle: #20242d;
+  --surface-strong: #292e38;
+  --muted: #98a2b3;
+  --border: #2b303b;
+  --border-strong: #414957;
+  --primary: #8ca5ff;
+  --primary-hover: #a9baff;
+  --primary-soft: #202b4d;
+  --primary-foreground: #11182e;
+  --danger: #ff8796;
+  --warning-surface: #2a2418;
+  --warning-border: #705b2d;
+  --warning: #d7ac4b;
+  --warning-foreground: #f1d796;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), "Pretendard Variable", Pretendard,
+    "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-feature-settings: "ss01", "cv02", "cv03";
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--primary-soft);
+  color: var(--foreground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
