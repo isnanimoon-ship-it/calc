@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 const TITLE = "개인정보처리방침";
 const CONTACT_EMAIL = "isnanik@daum.net";
 const EFFECTIVE_DATE = "2026-09-13";
+const LAST_REVISED_DATE = "2026-09-13";
+const REVISION_NOTE = "네이버 애널리틱스(웹로그 분석) 도입 반영";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -46,12 +48,24 @@ export default function PrivacyPage() {
         </p>
       </Section>
 
-      <Section title="2. 자동으로 수집되는 정보">
+      <Section title="2. 자동으로 수집되는 정보 (방문 통계)">
         <p>
-          현재 셈터는 방문자 분석 도구(애널리틱스)나 광고 스크립트, 쿠키를 사용하지
-          않습니다. 서버(호스팅 제공업체)가 통상적인 웹서버 접속 로그(IP, 접속 시각,
-          요청 페이지 등)를 자체적으로 남길 수 있으나, 셈터가 이를 이용자 식별이나
-          다른 목적으로 별도 가공·이용하지 않습니다.
+          셈터는 <strong className="text-foreground">네이버 애널리틱스(웹로그 분석)</strong>를
+          사용해 방문자 수, 유입 경로, 조회한 페이지 등 서비스 이용 통계를 집계합니다.
+          이 도구는 방문자의 브라우저에서 네이버 서버로 방문 기록을 직접 전송하며, 방문자를
+          구분하기 위한 자체 쿠키를 사용할 수 있습니다.
+        </p>
+        <p>
+          각 계산기에 입력하는 값(급여, 생년월일 등)은 이 분석 도구로도 전송되지
+          않습니다 — 계산 자체가 서버·외부 통신이 전혀 없는 브라우저 내부 로직이라
+          애초에 보낼 값이 없습니다(위 &ldquo;1.&rdquo; 참고). 이 도구가 수집하는 것은
+          &ldquo;누가 어떤 페이지를 봤는지&rdquo;일 뿐, &ldquo;계산기에 무엇을 입력했는지&rdquo;가
+          아닙니다.
+        </p>
+        <p>
+          그 외 서버(호스팅 제공업체)가 통상적인 웹서버 접속 로그(IP, 접속 시각, 요청
+          페이지 등)를 자체적으로 남길 수 있으나, 셈터가 이를 이용자 식별이나 다른
+          목적으로 별도 가공·이용하지 않습니다.
         </p>
       </Section>
 
@@ -66,7 +80,10 @@ export default function PrivacyPage() {
 
       <Section title="4. 제3자 제공 및 위탁">
         <p>
-          셈터는 개인정보를 제3자에게 제공하거나 외부 업체에 처리를 위탁하지 않습니다.
+          &ldquo;2.&rdquo;에서 설명한 네이버 애널리틱스를 제외하면, 셈터는 개인정보를
+          제3자에게 제공하거나 외부 업체에 처리를 위탁하지 않습니다. 네이버 애널리틱스로
+          전송되는 정보(방문 페이지, 유입 경로 등 방문 통계)의 처리 방식은 네이버의
+          자체 개인정보처리방침을 따릅니다.
         </p>
       </Section>
 
@@ -88,6 +105,7 @@ export default function PrivacyPage() {
           반영합니다.
         </p>
         <p className="text-sm">시행일: {EFFECTIVE_DATE}</p>
+        <p className="text-sm">최종 개정일: {LAST_REVISED_DATE} ({REVISION_NOTE})</p>
       </Section>
     </div>
   );

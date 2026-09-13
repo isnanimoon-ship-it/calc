@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CategoryNav } from "@/components/calculator/CategoryNav";
 import { SiteSearch } from "@/components/calculator/SiteSearch";
@@ -44,6 +45,14 @@ export const metadata: Metadata = {
     card: "summary",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
+  },
+  // 네이버 서치어드바이저 사이트 소유 확인용. Next.js `verification` 필드에 등록된 이름
+  // (google/yahoo/yandex/me)이 아니므로 `other`에 넣는다 — 렌더 결과는 동일하게
+  // <meta name="naver-site-verification" content="..."> 한 줄이다.
+  verification: {
+    other: {
+      "naver-site-verification": "d307af70db06f2afcd38ba4a336b2be4e104d86a",
+    },
   },
 };
 
@@ -93,6 +102,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
+        {/* 네이버 애널리틱스(웹로그 분석). docs/PRIVACY 정책 문구와 반드시 함께 갱신할 것 —
+            src/calculators 계산기 입력값은 이 스크립트로 전송되지 않는다(계산 자체가
+            서버 통신이 없는 순수 클라이언트 로직이라 애초에 보낼 데이터가 없다). 이
+            스크립트는 페이지 조회 자체만 집계한다. */}
+        <Script src="//wcs.pstatic.net/wcslog.js" strategy="afterInteractive" />
+        <Script id="naver-analytics-init" strategy="afterInteractive">
+          {`if(!wcs_add) var wcs_add = {};
+wcs_add["wa"] = "260cca4e6321980";
+if(window.wcs) {
+  wcs_do();
+}`}
+        </Script>
         <header className="border-b border-border bg-surface/85 backdrop-blur-xl">
           <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-5 sm:px-8">
             <Link href="/" className="flex min-w-0 items-center gap-2.5 font-semibold tracking-tight">

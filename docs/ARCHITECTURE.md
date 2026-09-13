@@ -528,6 +528,8 @@ annual-salary-take-home-pay FORMULA.md가 "4대 보험 근로자 부담분은 fo
 ## 개인정보/데이터 처리
 급여, 세금 등 사용자가 입력하는 값은 서버로 전송하거나 저장하지 않고 클라이언트에서만 계산한다. 서버 저장이 필요한 기능은 사전 논의 후 진행한다.
 
+**예외(2026-09-13, 사용자 직접 요청)**: 네이버 애널리틱스(웹로그 분석, `//wcs.pstatic.net/wcslog.js`)를 `app/layout.tsx`에 전역으로 추가했다 — 이는 계산기 입력값과 무관한 방문 통계(어떤 페이지를 봤는지)만 네이버 서버로 전송하며, 계산기 로직 자체는 여전히 서버·외부 통신이 전혀 없다. 이 추가에 맞춰 `app/privacy/page.tsx`("2. 자동으로 수집되는 정보", "4. 제3자 제공 및 위탁")를 동시에 갱신했다 — 분석 도구를 새로 추가하면서 "분석 도구를 쓰지 않는다"고 적힌 개인정보처리방침을 그대로 두면 실제 상태와 문서가 어긋나므로, 이런 종류의 추가는 항상 `/privacy` 갱신과 함께 다뤄야 한다.
+
 ## SEO / 사이트맵
 계산기 레지스트리를 단일 진실 공급원(SSOT)으로 삼는다.
 1. `/src/calculators/registry.ts`에 모든 계산기를 등록한다 (slug, title, description, category, lastModified, status: published/draft).
@@ -537,6 +539,7 @@ annual-salary-take-home-pay FORMULA.md가 "4대 보험 근로자 부담분은 fo
 5. 홈/카테고리 목록도 레지스트리에서 동적 생성해 내부링크가 자동으로 확장되게 한다.
 6. 페이지 구조: 계산기 → 결과 → 사용 방법 → 공식 → 예제 → FAQ.
 7. Search Console 재제출/색인 요청은 수동 진행.
+8. 네이버 서치어드바이저 사이트 소유 확인은 `app/layout.tsx`의 `metadata.verification.other["naver-site-verification"]`로 관리한다(하드코딩된 `<meta>` 태그를 별도로 두지 않는다 — Next.js Metadata API가 렌더링).
 
 ### 결정 사례: 카테고리 전용 페이지 신설 및 헤더 메뉴 (2026-09-13)
 사용자가 홈 화면 카테고리 분류와 계산기 상세 페이지의 말머리(eyebrow) 표기가 서로 어긋나
