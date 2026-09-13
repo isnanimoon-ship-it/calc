@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
-import Script from "next/script";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CategoryNav } from "@/components/calculator/CategoryNav";
 import { SiteSearch } from "@/components/calculator/SiteSearch";
+import { NaverAnalytics } from "@/components/NaverAnalytics";
 import {
   categoryLabels,
   getPublishedCalculators,
@@ -105,15 +105,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* 네이버 애널리틱스(웹로그 분석). docs/PRIVACY 정책 문구와 반드시 함께 갱신할 것 —
             src/calculators 계산기 입력값은 이 스크립트로 전송되지 않는다(계산 자체가
             서버 통신이 없는 순수 클라이언트 로직이라 애초에 보낼 데이터가 없다). 이
-            스크립트는 페이지 조회 자체만 집계한다. */}
-        <Script src="//wcs.pstatic.net/wcslog.js" strategy="afterInteractive" />
-        <Script id="naver-analytics-init" strategy="afterInteractive">
-          {`if(!wcs_add) var wcs_add = {};
-wcs_add["wa"] = "260cca4e6321980";
-if(window.wcs) {
-  wcs_do();
-}`}
-        </Script>
+            스크립트는 페이지 조회 자체만 집계한다. onLoad로 실행 순서를 강제해야 하는
+            이유는 components/NaverAnalytics.tsx 상단 주석 참고. */}
+        <NaverAnalytics />
         <header className="border-b border-border bg-surface/85 backdrop-blur-xl">
           <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-5 sm:px-8">
             <Link href="/" className="flex min-w-0 items-center gap-2.5 font-semibold tracking-tight">
