@@ -288,6 +288,36 @@ export const calculatorRegistry: CalculatorMeta[] = [
     status: "published",
     lastModified: "2026-09-13",
   },
+  {
+    slug: "bmr-calculator",
+    title: "기초대사량(BMR) 계산기",
+    description:
+      "성별·나이·키·체중으로 하루 최소 에너지 소비량(기초대사량, BMR)을 계산하고, 활동량을 선택하면 활동을 반영한 하루 총 소비 칼로리(TDEE)까지 함께 계산합니다.",
+    // tasks/bmr-calculator/SPEC.md "슬러그/카테고리" — health 카테고리에서 bmi-calculator가
+    // 이미 heart를 쓰고 있어 시각적으로 구분되도록 chart를 골랐다(활동계수별 TDEE 비교라는
+    // 결과 성격과도 맞는다, ARCHITECTURE.md "11." 동의).
+    icon: "chart",
+    category: "health",
+    // 최종 97점(tasks/bmr-calculator/EVALUATION.md, 2026-09-13). published 전환.
+    status: "published",
+    lastModified: "2026-09-13",
+  },
+  {
+    slug: "housing-acquisition-tax",
+    title: "주택 취득세 계산기",
+    description:
+      "매매가·전용면적·조정대상지역 해당 여부·취득 후 보유 주택 수로 주택 매매(유상취득) " +
+      "취득세·지방교육세·농어촌특별세와 총 납부액을 계산합니다.",
+    // tasks/housing-acquisition-tax/SPEC.md "슬러그/카테고리" — tax 카테고리에 이미
+    // heart(four-major-insurance)·chart(housing-subscription-score)·coins(annual-salary-
+    // take-home-pay, national-pension-benefit-estimate, 2회 중복)가 쓰이고 있어, 현재 tax
+    // 카테고리에서 쓰인 적 없는 "calculator"를 골라 시각적으로 구분한다(Architect "12." 동의).
+    icon: "calculator",
+    category: "tax",
+    // 최종 96점(tasks/housing-acquisition-tax/EVALUATION.md, 2026-09-14). published 전환.
+    status: "published",
+    lastModified: "2026-09-14",
+  },
 ];
 
 /** 공개 대상(published)만 반환한다. 홈/카테고리 목록, sitemap, robots가 공통으로 사용한다. */

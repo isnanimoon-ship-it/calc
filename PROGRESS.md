@@ -19,10 +19,14 @@
 | average-cost-calculator (평단가/물타기) | PASS | PASS | PASS | PASS | PASS | PASS | 97 | DONE | 해당 없음(정책형 아님, 공식 오류 발견 시에만) |
 | d-day-calculator (디데이) | PASS | PASS | PASS | PASS | PASS | PASS | 98 | DONE | 해당 없음(정책형 아님, 날짜 계산 로직 오류 발견 시에만) |
 | national-pension-benefit-estimate (국민연금 예상수령액) | PASS | PASS | PASS | PASS | PASS | PASS | 97 | DONE | 2026-12-01(A값)·2027-01-01(비례상수 등, 43% 고정 유지 여부 포함) |
+| bmr-calculator (기초대사량/BMR) | PASS | PASS | PASS | PASS | PASS | PASS | 97 | DONE | 해당 없음(정책형 아님, 대표 공식 1차 출처 개정·오류 발견 시에만) |
+| housing-acquisition-tax (주택 취득세) | PASS | PASS | PASS | PASS | PASS | PASS | 96 | DONE | 2027-01-01(정기)·조정대상지역 지정/해제 고시 시·다주택자 중과세율 완화 개정안 통과 시·생애최초 감면 일몰(2028-12-31) 임박 시·위택스 대조로 10원 미만 절사 확정 시(조기 재검토, tasks/housing-acquisition-tax/FORMULA.md "조기 재검토 트리거" 참고)*** |
 
 \* 정기 재검토 외에 조기 트리거 있음: 2027년 시행 예정인 고용보험제도 개편안(산정기준 변경 등)의 법 개정·공포 시점을 확인되는 즉시 재검토(tasks/unemployment-benefit/FORMULA.md "기준/출처" 하단 참고).
 
 \*\* 정기 재검토(최저임금 연 1회 고시 주기, rates-2027.json에 최저임금 10,700원 반영 필요) 외 조기 트리거 있음: (1) 고용노동부가 대법원 2022다291153 판결을 반영해 주휴수당 산정 행정해석/실무를 변경하는 경우, (2) 주휴수당 제도 자체의 입법 변경, (3) 법정근로시간(주 40시간)·초단시간 기준(15시간) 개정(tasks/weekly-holiday-allowance/FORMULA.md "기준/출처" 하단 참고).
+
+\*\*\* Architect 라운드(2026-09-14)에서 SPEC.md 예시(3구간)를 FORMULA.md 권고에 따라 4구간(1/2/3/4채 이상)으로 확정하고, FORMULA.md 프로즈와 검증 예제 사이의 6~9억 구간 세율 반올림 대상 불일치를 재계산으로 정정했다 — 상세는 tasks/housing-acquisition-tax/ARCHITECTURE.md "1.", "2." 참고. 10원 미만 절사 잠정 채택 여부는 Calculation Auditor의 위택스 대조가 최우선 검증 항목이다(같은 문서 "14.").
 
 ## Status 값
 TODO / IN PROGRESS / FIXING / DONE / NEEDS HUMAN REVIEW

@@ -21,6 +21,8 @@ import { billSplitCalculatorFaqSeoItems } from "@/src/calculators/bill-split-cal
 import { averageCostCalculatorFaqSeoItems } from "@/src/calculators/average-cost-calculator/content";
 import { dDayCalculatorFaqSeoItems } from "@/src/calculators/d-day-calculator/content";
 import { npbFaqSeoItems } from "@/src/calculators/national-pension-benefit-estimate/content";
+import { bmrFaqSeoItems } from "@/src/calculators/bmr-calculator/content";
+import { housingAcquisitionTaxFaqSeoItems } from "@/src/calculators/housing-acquisition-tax/content";
 import { siteUrl } from "@/src/lib/site-config";
 
 type CalculatorPageProps = {
@@ -52,6 +54,8 @@ const faqItemsBySlug = {
   "average-cost-calculator": averageCostCalculatorFaqSeoItems,
   "d-day-calculator": dDayCalculatorFaqSeoItems,
   "national-pension-benefit-estimate": npbFaqSeoItems,
+  "bmr-calculator": bmrFaqSeoItems,
+  "housing-acquisition-tax": housingAcquisitionTaxFaqSeoItems,
 } as const;
 
 /**
