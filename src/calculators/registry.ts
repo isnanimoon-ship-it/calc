@@ -318,6 +318,26 @@ export const calculatorRegistry: CalculatorMeta[] = [
     status: "published",
     lastModified: "2026-09-14",
   },
+  {
+    slug: "annual-leave-allowance",
+    title: "연차수당 계산기",
+    description:
+      "입사일만 입력해도 연차 발생일수를 자동으로 계산하고, 사용한 연차일수와 1일 통상임금을 " +
+      "추가로 입력하면 미사용 연차수당 금액까지 계산 근거와 함께 계산합니다.",
+    // tasks/annual-leave-allowance/ARCHITECTURE.md "15." — labor 카테고리에는 이미
+    // coins(severance-pay)·calculator(unemployment-benefit)·calendar(weekly-holiday-allowance)·
+    // heart(parental-leave-benefit)가 쓰이고 있다(registry.ts 2026-09-14 기준 확인). 이 넷과
+    // 겹치지 않으면서 아직 labor 카테고리에서 쓰인 적 없는 "chart"를 골랐다 — 이 계산기의
+    // 결과 성격(근속연수에 따라 11→26→15→2년마다 +1일→25일 상한까지 단계적으로 바뀌는
+    // 발생일수 곡선, "가산 연차 단계별 breakdown")이 loan-interest-calculator/
+    // housing-subscription-score/bmr-calculator가 "chart"를 택한 이유(표·단계별 비교 결과)와
+    // 같은 계열이라는 점도 근거로 삼았다.
+    icon: "chart",
+    category: "labor",
+    // 최종 98점(tasks/annual-leave-allowance/EVALUATION.md, 2026-09-14). published 전환.
+    status: "published",
+    lastModified: "2026-09-14",
+  },
 ];
 
 /** 공개 대상(published)만 반환한다. 홈/카테고리 목록, sitemap, robots가 공통으로 사용한다. */

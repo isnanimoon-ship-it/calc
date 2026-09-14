@@ -23,6 +23,7 @@ import { dDayCalculatorFaqSeoItems } from "@/src/calculators/d-day-calculator/co
 import { npbFaqSeoItems } from "@/src/calculators/national-pension-benefit-estimate/content";
 import { bmrFaqSeoItems } from "@/src/calculators/bmr-calculator/content";
 import { housingAcquisitionTaxFaqSeoItems } from "@/src/calculators/housing-acquisition-tax/content";
+import { annualLeaveAllowanceFaqSeoItems } from "@/src/calculators/annual-leave-allowance/content";
 import { siteUrl } from "@/src/lib/site-config";
 
 type CalculatorPageProps = {
@@ -56,6 +57,7 @@ const faqItemsBySlug = {
   "national-pension-benefit-estimate": npbFaqSeoItems,
   "bmr-calculator": bmrFaqSeoItems,
   "housing-acquisition-tax": housingAcquisitionTaxFaqSeoItems,
+  "annual-leave-allowance": annualLeaveAllowanceFaqSeoItems,
 } as const;
 
 /**
