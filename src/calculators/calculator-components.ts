@@ -19,6 +19,7 @@ import NationalPensionBenefitEstimateUi from "./national-pension-benefit-estimat
 import BmrCalculatorUi from "./bmr-calculator/ui";
 import HousingAcquisitionTaxUi from "./housing-acquisition-tax/ui";
 import AnnualLeaveAllowanceUi from "./annual-leave-allowance/ui";
+import MinimumWageCalculatorUi from "./minimum-wage-calculator/ui";
 
 /**
  * 계산기 slug와 실제 화면 구현의 연결점. 메타데이터 레지스트리와 분리해 서버용 데이터가
@@ -51,6 +52,7 @@ export const calculatorComponents: Record<string, ComponentType> = {
   "bmr-calculator": BmrCalculatorUi,
   "housing-acquisition-tax": HousingAcquisitionTaxUi,
   "annual-leave-allowance": AnnualLeaveAllowanceUi,
+  "minimum-wage-calculator": MinimumWageCalculatorUi,
 };
 
 export function hasCalculatorComponent(slug: string): boolean {

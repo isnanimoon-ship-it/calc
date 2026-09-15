@@ -22,6 +22,7 @@
 | bmr-calculator (기초대사량/BMR) | PASS | PASS | PASS | PASS | PASS | PASS | 97 | DONE | 해당 없음(정책형 아님, 대표 공식 1차 출처 개정·오류 발견 시에만) |
 | housing-acquisition-tax (주택 취득세) | PASS | PASS | PASS | PASS | PASS | PASS | 96 | DONE | 2027-01-01(정기)·조정대상지역 지정/해제 고시 시·다주택자 중과세율 완화 개정안 통과 시·생애최초 감면 일몰(2028-12-31) 임박 시·위택스 대조로 10원 미만 절사 확정 시(조기 재검토, tasks/housing-acquisition-tax/FORMULA.md "조기 재검토 트리거" 참고)*** |
 | annual-leave-allowance (연차수당) | PASS | PASS | PASS | PASS | PASS | PASS | 98 | DONE | 2027-01-01(최저임금 참고 경고 갱신)·근로기준법 제60조/제61조 개정 시 |
+| minimum-wage-calculator (최저임금·시급↔월급) | PASS | PASS (v2) | PASS (v2) | PASS (v2) | PASS | PASS | 96 | DONE | 2027-01-01(최저임금 연 1회 고시 갱신) |
 
 \* 정기 재검토 외에 조기 트리거 있음: 2027년 시행 예정인 고용보험제도 개편안(산정기준 변경 등)의 법 개정·공포 시점을 확인되는 즉시 재검토(tasks/unemployment-benefit/FORMULA.md "기준/출처" 하단 참고).
 

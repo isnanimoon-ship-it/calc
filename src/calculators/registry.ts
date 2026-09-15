@@ -338,6 +338,28 @@ export const calculatorRegistry: CalculatorMeta[] = [
     status: "published",
     lastModified: "2026-09-14",
   },
+  {
+    slug: "minimum-wage-calculator",
+    title: "최저임금·시급↔월급 계산기",
+    description:
+      "시급 또는 월급 중 아는 값 하나만 입력하면 나머지 금액으로 환산하고, 올해 고시된 " +
+      "최저임금과 비교해 이상/미만을 계산 근거와 함께 알려줍니다.",
+    // tasks/minimum-wage-calculator/ARCHITECTURE.md "16." — labor 카테고리에는 이미
+    // coins(severance-pay)·calculator(unemployment-benefit)·calendar(weekly-holiday-allowance)·
+    // heart(parental-leave-benefit)·chart(annual-leave-allowance)가 쓰이고 있다(registry.ts
+    // 2026-09-14 기준 확인). 남은 키는 "utility"·"trend" 둘이다. "utility"는 CalculatorCard.tsx의
+    // CalculatorIcon에 전용 SVG 분기가 없어 fallback(문서 아이콘)으로 렌더링되는데, 이 fallback은
+    // 이미 labor 카테고리의 "heart"(parental-leave-benefit, 마찬가지로 전용 분기가 없어 같은
+    // fallback을 쓴다)와 시각적으로 완전히 동일해져 두 계산기가 카테고리 목록에서 구분되지
+    // 않는다. 반면 "trend"는 전용 SVG(등락 지그재그 + 화살표)가 있어 시각적으로 확실히
+    // 구분되고, "최저임금 이상/미만" 비교·판정이라는 이 계산기의 핵심 결과 성격과도 잘 맞는다
+    // (average-cost-calculator가 "평단가 변동" 성격에 trend를 쓴 것과 같은 계열의 판단).
+    icon: "trend",
+    category: "labor",
+    // 최종 96점(tasks/minimum-wage-calculator/EVALUATION.md, 2026-09-15). published 전환.
+    status: "published",
+    lastModified: "2026-09-15",
+  },
 ];
 
 /** 공개 대상(published)만 반환한다. 홈/카테고리 목록, sitemap, robots가 공통으로 사용한다. */

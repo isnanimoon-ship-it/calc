@@ -21,6 +21,7 @@
  */
 
 import rates2026 from "@/src/data/rates-2026.json";
+import { calculateWeeklyHolidayHours } from "@/src/lib/labor-standards";
 import type {
   WeeklyHolidayAllowanceInput,
   WeeklyHolidayAllowanceResult,
@@ -101,8 +102,11 @@ export function calculateWeeklyHolidayAllowance(
   const minimumHourlyWage = rates.minimumWage.hourly.value;
 
   // 1. 1주 주휴시간 — min((weeklyHours ÷ 40) × 8, 8). 반올림하지 않는다(예: 23÷5 = 4.6, 13.5÷5 = 2.7).
-  const weeklyHolidayHours = Math.min(
-    (weeklyHours / statutoryWeeklyHours) * statutoryDailyHours,
+  // src/lib/labor-standards.ts로 추출됨(minimum-wage-calculator와 공유, 2026-09-14 Architect
+  // 라운드) — 산식 자체는 한 글자도 바꾸지 않고 그대로 옮겼다.
+  const weeklyHolidayHours = calculateWeeklyHolidayHours(
+    weeklyHours,
+    statutoryWeeklyHours,
     statutoryDailyHours,
   );
 
