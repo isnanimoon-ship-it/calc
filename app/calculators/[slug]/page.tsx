@@ -25,6 +25,7 @@ import { bmrFaqSeoItems } from "@/src/calculators/bmr-calculator/content";
 import { housingAcquisitionTaxFaqSeoItems } from "@/src/calculators/housing-acquisition-tax/content";
 import { annualLeaveAllowanceFaqSeoItems } from "@/src/calculators/annual-leave-allowance/content";
 import { minimumWageCalculatorFaqSeoItems } from "@/src/calculators/minimum-wage-calculator/content";
+import { depositSavingsInterestCalculatorFaqSeoItems } from "@/src/calculators/deposit-savings-interest-calculator/content";
 import { siteUrl } from "@/src/lib/site-config";
 
 type CalculatorPageProps = {
@@ -60,6 +61,7 @@ const faqItemsBySlug = {
   "housing-acquisition-tax": housingAcquisitionTaxFaqSeoItems,
   "annual-leave-allowance": annualLeaveAllowanceFaqSeoItems,
   "minimum-wage-calculator": minimumWageCalculatorFaqSeoItems,
+  "deposit-savings-interest-calculator": depositSavingsInterestCalculatorFaqSeoItems,
 } as const;
 
 /**

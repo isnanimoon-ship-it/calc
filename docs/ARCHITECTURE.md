@@ -327,6 +327,19 @@ FORMULA.md "정밀도/반올림 정책"이 "전 단위 정수 스케일링(또�
   1/1,000 이하다.
 - 상세: `tasks/d-day-calculator/ARCHITECTURE.md` "2. 숫자 정밀도 전략".
 
+### 결정 사례: 예금·적금 이자 계산기 (deposit-savings-interest-calculator, 2026-09-15)
+
+- **일반 `Number`, 스케일링/`BigInt`/`decimal.js` 전혀 불필요.** loan-interest-calculator가
+  거듭제곱(`(1+r)^n`)의 최악 조합을 직접 재계산해 확정한 것과 같은 방법으로, 이 계산기도
+  최악 조합(예금 원금 상한 100억 원 × 연이율 상한 30% × 기간 상한 120개월 월복리)을 직접
+  재계산했다 — `(1+0.30/12)^120 ≈ 19.358`(Node `Math.pow` 직접 계산), 세전 이자(raw) 최대
+  약 1.836×10^11원으로 `Number.MAX_SAFE_INTEGER`(약 9.007×10^15)의 1/49,000 수준이라
+  압도적으로 안전하다. 적금(월 납입액 상한 5천만 원 × 연이율 30% × 120개월)의 세전 이자
+  최대치도 약 9.075×10^9원으로 마찬가지로 안전하다. loan-interest-calculator(최대 지수
+  480, 최대 상대오차 누적 우려)보다 지수·회차 규모가 훨씬 작아(최대 120) 부동소수점
+  상대오차가 원 단위 반올림에 영향을 줄 여지가 더욱 작다.
+- 상세: `tasks/deposit-savings-interest-calculator/ARCHITECTURE.md` "2. 숫자 정밀도 전략".
+
 ## 날짜 계산
 timezone, 윤년, 월별 일수, DST, 시작일/종료일 포함 여부를 반드시 명시적으로 처리한다. date-only 계산은 명시적 calendar date 기준으로 하고, JS Date 객체의 timezone 이동으로 날짜가 하루 밀리는 문제가 없는지 테스트로 검증한다.
 
@@ -436,6 +449,43 @@ annual-salary-take-home-pay FORMULA.md가 "4대 보험 근로자 부담분은 fo
   insurance`에 남긴 것이 이 원칙의 적용이다).
 - 상세: `tasks/annual-salary-take-home-pay/ARCHITECTURE.md` "1. 핵심 결정 — 4대 보험
   근로자 부담분 재사용 방식".
+
+### 결정 사례: 적금 단리 후취식 닫힌 형 공용화 — `src/lib/installment-savings.ts` (2026-09-15, deposit-savings-interest-calculator Architect 라운드)
+
+`military-salary`(장병내일준비적금)의 `logic.ts`가 이미 `Math.floor(monthlyContributionWon×
+(rate/100)×(n×(n+1)/2)/12)`라는 닫힌 형을 인라인 한 줄로 계산해 왔는데,
+`deposit-savings-interest-calculator`(일반 시중 적금)의 FORMULA.md가 완전히 동일한 수식·
+동일한 반올림 정책(원 단위 미만 절사)을 재사용한다고 명시했다. 이 사례는 "동일한 법적
+정의를 공유하는 순수 계산이면 `src/lib/`로 추출한다"는 기존 기준(위 "4대 보험 근로자 부담분
+공용화", `tasks/minimum-wage-calculator/ARCHITECTURE.md` "1.2"의 재확인)을 **법적 정의가
+다른 두 상품 사이**에 처음 적용한 사례라 판단 근거를 남긴다.
+
+- **법적 근거는 다르지만 산식은 완전히 동일함을 양쪽 FORMULA.md로 직접 확인했다.**
+  `military-salary/FORMULA.md`는 이 산식을 "은행이자는 상품·은행·우대조건·납입일에 따라
+  달라진다. v1은 사용자가 입력한 연 금리를 이용해... 월 단위 단리로 추정한다"고 설명해,
+  애초에 법령이 아니라 **표준 재무수학으로 추정한 값**임을 스스로 밝히고 있다 — 즉 두
+  계산기 모두 "법적으로 강제된 계산법"이 아니라 "동일한 표준 공식을 각자의 상품에 적용한
+  것"이므로, `weekly-holiday-allowance`/`minimum-wage-calculator`의 주휴시간 산식 사례
+  (완전히 동일한 법령 조문을 공유)와는 "동일성의 근거"가 다르지만, 결론(완전히 동일한
+  수식·상수·반올림 정책)은 같다. **판단 기준을 "동일한 법적 정의" 하나로 좁히지 않고
+  "완전히 동일한 수식·완전히 동일한 반올림 정책을 지금 당장 두 계산기가 동시에 필요로
+  하는가"로 일반화한다** — 이번 사례처럼 법적 근거 자체가 없거나 서로 다른 두 표준 공식이
+  우연히 완전히 같을 때도 이 기준을 적용할 수 있다.
+- **공유 범위를 "닫힌 형 총합(및 그 절사)"으로 좁게 잡았다.** military-salary는 회차별
+  breakdown이 전혀 없고 최종 합계만 필요하다. `deposit-savings-interest-calculator`는
+  추가로 회차별 표(`schedule[]`, 개별 반올림)가 필요한데, 이 부분은 military-salary에
+  대응물이 없는 이 계산기 전용 로직이라 `src/lib/`로 옮기지 않고 계산기 로컬(`logic.ts`)에
+  남겼다 — "근로자 부담분만 추출하고 사업주 부담·가입 on/off는 원래 계산기에 남긴" 4대
+  보험 근로자 부담분 공용화 사례와 동일한 원칙("여러 계산기가 실제로 공유하는 최소한의
+  순수 계산 단위만 골라 추출한다")을 그대로 적용했다.
+- **회귀 검증**: `military-salary/logic.ts`의 인라인 식을 한 글자도 바꾸지 않고 그대로
+  `calculateInstallmentSimpleInterestTotal(monthlyContributionWon, annualRatePercent,
+  months)`로 옮긴 뒤, 호출부를 이 함수 호출로 교체하는 얇은 리팩터링만 수행했다.
+  `npx tsc --noEmit` 클린, `npx vitest run --no-file-parallelism` 90개 테스트 파일·1,275개
+  테스트 전부 통과(리팩터링 전후 회귀 없음 — `military-salary/logic.test.ts`의 Golden Test
+  `estimatedInterestWon: 391875`(월 55만원·18개월·연 5%) 포함).
+- 상세: `tasks/deposit-savings-interest-calculator/ARCHITECTURE.md` "3. 적금 단리 후취식
+  산식의 코드 위치".
 
 ## 무작위(RNG)를 쓰는 계산 로직 설계 패턴
 

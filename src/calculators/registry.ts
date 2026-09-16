@@ -360,6 +360,26 @@ export const calculatorRegistry: CalculatorMeta[] = [
     status: "published",
     lastModified: "2026-09-15",
   },
+  {
+    slug: "deposit-savings-interest-calculator",
+    title: "예금·적금 이자 계산기",
+    description:
+      "예치 원금 또는 월 납입액과 연이율·기간으로 예금(단리/월복리)·적금(단리 후취식)의 " +
+      "세전 이자, 이자소득세(15.4%), 세후 이자와 세후 만기수령액을 계산합니다.",
+    // tasks/deposit-savings-interest-calculator/ARCHITECTURE.md "9." — finance 카테고리에는
+    // 이미 coins(military-salary)·chart(loan-interest-calculator)·trend(average-cost-
+    // calculator) 세 키가 쓰이고 있어 네 번째 계산기는 이 셋과 구분되는 키가 필요하다.
+    // "calculator"는 이미 unemployment-benefit(labor)·housing-acquisition-tax(tax)가
+    // 쓰고 있지만 서로 다른 카테고리 섹션에 노출되므로 문제되지 않는다(coins/chart도
+    // 카테고리를 넘어 중복 사용 중인 기존 관례). "예금·적금 이자를 계산해 주는 범용 금융
+    // 계산 도구"라는 성격이 heart(건강/보험 계열)·utility보다 calculator와 더 잘 맞는다.
+    icon: "calculator",
+    category: "finance",
+    // 최종 98점(tasks/deposit-savings-interest-calculator/EVALUATION.md, 2026-09-16).
+    // published 전환.
+    status: "published",
+    lastModified: "2026-09-16",
+  },
 ];
 
 /** 공개 대상(published)만 반환한다. 홈/카테고리 목록, sitemap, robots가 공통으로 사용한다. */
