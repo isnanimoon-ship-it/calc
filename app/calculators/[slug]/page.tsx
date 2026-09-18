@@ -26,6 +26,7 @@ import { housingAcquisitionTaxFaqSeoItems } from "@/src/calculators/housing-acqu
 import { annualLeaveAllowanceFaqSeoItems } from "@/src/calculators/annual-leave-allowance/content";
 import { minimumWageCalculatorFaqSeoItems } from "@/src/calculators/minimum-wage-calculator/content";
 import { depositSavingsInterestCalculatorFaqSeoItems } from "@/src/calculators/deposit-savings-interest-calculator/content";
+import { realEstateBrokerageFeeFaqSeoItems } from "@/src/calculators/real-estate-brokerage-fee-calculator/content";
 import { siteUrl } from "@/src/lib/site-config";
 
 type CalculatorPageProps = {
@@ -62,6 +63,7 @@ const faqItemsBySlug = {
   "annual-leave-allowance": annualLeaveAllowanceFaqSeoItems,
   "minimum-wage-calculator": minimumWageCalculatorFaqSeoItems,
   "deposit-savings-interest-calculator": depositSavingsInterestCalculatorFaqSeoItems,
+  "real-estate-brokerage-fee-calculator": realEstateBrokerageFeeFaqSeoItems,
 } as const;
 
 /**

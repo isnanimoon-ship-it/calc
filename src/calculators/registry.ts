@@ -380,6 +380,23 @@ export const calculatorRegistry: CalculatorMeta[] = [
     status: "published",
     lastModified: "2026-09-16",
   },
+  {
+    slug: "real-estate-brokerage-fee-calculator",
+    title: "부동산 중개수수료 계산기",
+    description:
+      "매매가격 또는 보증금·월차임을 입력하면 「공인중개사법 시행규칙」과 지자체 조례에 " +
+      "따른 주택 중개보수(복비) 상한액을 계산 근거와 함께 계산합니다.",
+    // tasks/real-estate-brokerage-fee-calculator/ARCHITECTURE.md "8.3" — SPEC.md가 제안한
+    // "utility"는 전용 SVG 분기가 없어 heart(four-major-insurance)의 fallback과 시각적으로
+    // 겹친다(minimum-wage-calculator가 labor 카테고리에서 겪은 것과 동일한 함정). tax
+    // 카테고리에서 아직 쓰이지 않은 "trend"로 정정한다.
+    icon: "trend",
+    category: "tax",
+    // 최종 98점(tasks/real-estate-brokerage-fee-calculator/EVALUATION.md, 2026-09-18).
+    // published 전환.
+    status: "published",
+    lastModified: "2026-09-18",
+  },
 ];
 
 /** 공개 대상(published)만 반환한다. 홈/카테고리 목록, sitemap, robots가 공통으로 사용한다. */
